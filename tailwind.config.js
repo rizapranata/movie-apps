@@ -1,11 +1,22 @@
 export default {
-  purge: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
-  darkMode: false, // or 'media' or 'class'
+  content: [
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
+  ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        primary: "#292e35",
+        secondary: "#1e232a",
+        danger: "#e74c3c",
+        warning: "#f39c12",
+        success: "#27ae60",
+        text: "#333",
+      },
+    },
   },
-  variants: {
-    extend: {},
-  },
-  plugins: [],
+  plugins: [
+    // eslint-disable-next-line no-undef
+    require('tailwindcss-no-scrollbar')
+  ],
 }
