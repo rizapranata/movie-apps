@@ -9,8 +9,8 @@ function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState("");
 
-  return (
-    <nav className="bg-primary text-white p-4 shadow-lg">
+  return (//bg-opacity-50 -> untuk transparan
+    <nav className="bg-primary text-white p-4 shadow-lg absolute top-0 left-0 w-full z-10">
       <div className="container mx-auto flex justify-between items-center">
         <div className="flex items-center space-x-7">
           <Link to="/" className="text-xl font-bold">

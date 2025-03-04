@@ -1,18 +1,31 @@
 import React, { useEffect, useState } from 'react'
 import GlobalApi from '../Services/GlobalApi';
+import { Link } from "react-router-dom";
 const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/original";
 
 function Discover() {
   const [movies, setMovies] = useState([]);
+  const [genres, setGenres] = useState([]);
 
   useEffect(() => {
     getDiscoverMovies();
+    getGenresMovie();
   }, []);
 
   const getDiscoverMovies = () => {
     GlobalApi.getDiscover.then(res => {
       setMovies(res.data.results);
     })
+  }
+
+  const getGenresMovie = () => {
+    GlobalApi.getGenres.then(res => {
+      setGenres(res.data.genres);
+    });
+  }
+
+  const initGenre = (genresIds) => {
+    return genres.filter((genre) => genresIds.includes(genre.id));;
   }
 
   return (
@@ -37,7 +50,7 @@ function Discover() {
         {movies.map((movie) => {
           const year = movie.release_date.split('-')[0];
           return (
-            <div key={movie.id} className="relative">
+            <Link key={movie.id} to={`/movie/${movie.id}`} className="relative group cursor-pointer">
               <img
                 src={IMAGE_BASE_URL + movie.backdrop_path}
                 className="shadow-md lg:w-full h-[350px] object-cover"
@@ -47,16 +60,29 @@ function Discover() {
                 {movie.vote_average}
               </span>
 
+              <div className="absolute inset-0 bg-black bg-opacity-75 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <span className="text-yellow-400 text-lg font-bold flex items-center">
+                  ★ {movie.vote_average}
+                </span>
+                <p className="text-gray-300 text-sm mt-1">{initGenre(movie.genre_ids).map(data => data.name).join(", ")}</p>
+                <button
+                  className="mt-3 bg-red-500 text-white px-4 py-1 rounded-full text-sm font-semibold"
+                  onClick={(e) => e.preventDefault()} // Hindari reload saat klik tombol
+                >
+                  VIEW
+                </button>
+              </div>
+
               <div className="mt-2">
                 <h3 className="text-base font-semibold">{movie.title}</h3>
                 <p className="text-gray-400 text-sm">{year}</p>
               </div>
-            </div>
+            </Link>
           );
         })}
       </div>
     </div>
-  )
+  );
 }
 
 export default Discover

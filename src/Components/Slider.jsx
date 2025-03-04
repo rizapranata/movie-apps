@@ -35,7 +35,7 @@ function Slider() {
   };
 
   return (
-    <div className="bg-secondary relative w-full mx-auto px-4">
+    <div className="bg-secondary relative w-full mx-auto px-4 pt-[70px]">
       <div
         className="flex overflow-x-auto snap-x snap-mandatory scrollbar-none scroll-smooth"
         onScroll={handleScroll}
