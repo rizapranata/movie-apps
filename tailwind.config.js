@@ -8,7 +8,7 @@ export default {
       colors: {
         primary: "#292e35",
         secondary: "#1e232a",
-        danger: "#e74c3c",
+        thrd: "#15191f",
         warning: "#f39c12",
         success: "#27ae60",
         text: "#333",

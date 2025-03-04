@@ -50,7 +50,7 @@ function Discover() {
         {movies.map((movie) => {
           const year = movie.release_date.split('-')[0];
           return (
-            <Link key={movie.id} to={`/movie/${movie.id}`} className="relative group cursor-pointer">
+            <Link key={movie.id} to={`/detail/movie/${movie.id}`} className="relative group cursor-pointer">
               <img
                 src={IMAGE_BASE_URL + movie.backdrop_path}
                 className="shadow-md lg:w-full h-[350px] object-cover"
