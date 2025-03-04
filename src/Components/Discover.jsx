@@ -7,22 +7,20 @@ function Discover() {
   const [movies, setMovies] = useState([]);
   const [genres, setGenres] = useState([]);
 
-  useEffect(() => {
-    getDiscoverMovies();
-    getGenresMovie();
-  }, []);
+   useEffect(() => {
+      const fetchMovie = async () => {
+        const data = await GlobalApi.getDiscover();
+        setMovies(data.results);
+      };
 
-  const getDiscoverMovies = () => {
-    GlobalApi.getDiscover.then(res => {
-      setMovies(res.data.results);
-    })
-  }
-
-  const getGenresMovie = () => {
-    GlobalApi.getGenres.then(res => {
-      setGenres(res.data.genres);
-    });
-  }
+      const fetchGenres = async () => {
+        const data = await GlobalApi.getGenres();
+        setGenres(data.genres);
+      };
+  
+      fetchMovie();
+      fetchGenres();
+    }, []);
 
   const initGenre = (genresIds) => {
     return genres.filter((genre) => genresIds.includes(genre.id));;
@@ -49,6 +47,7 @@ function Discover() {
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-x-4 gap-y-8">
         {movies.map((movie) => {
           const year = movie.release_date.split('-')[0];
+          
           return (
             <Link key={movie.id} to={`/detail/movie/${movie.id}`} className="relative group cursor-pointer">
               <img

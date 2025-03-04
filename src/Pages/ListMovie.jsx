@@ -10,21 +10,19 @@ function ListMovie() {
   const { id } = useParams();
 
   useEffect(() => {
-    getMovies();
-    getGenres();
+    const fetchMovie = async () => {
+      const data = await GlobalApi.getDiscover();
+      setMovies(data.results);
+    };
+
+    const fetchGenres = async () => {
+      const data = await GlobalApi.getGenres();
+      setGenres(data.genres);
+    };
+
+    fetchMovie();
+    fetchGenres();
   }, []);
-
-  const getMovies = () => {
-    GlobalApi.getDiscover.then(res => {
-      setMovies(res.data.results);
-    })
-  }
-
-  const getGenres = () => {
-    GlobalApi.getGenres.then(res => {
-      setGenres(res.data.genres);
-    })
-  }
 
   useEffect(() => {
     handleGenreChange(id);
@@ -38,9 +36,6 @@ function ListMovie() {
         : [...prevGenres, genreId]
     );
   };
-
-  console.log("selectedGenres:", selectedGenres);
-
 
   // Filter movies based on selected genres
   const filteredMovies =

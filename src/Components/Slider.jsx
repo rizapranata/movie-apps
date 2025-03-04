@@ -8,22 +8,19 @@ function Slider() {
   const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
-    getTopRatedMovies();
-    getGenresMovie();
+    const fetchMovie = async () => {
+      const data = await GlobalApi.getTopRated();
+      setMovies(data.results);
+    };
+
+    const fetchGenres = async () => {
+      const data = await GlobalApi.getGenres();
+      setGenres(data.genres);
+    };
+
+    fetchMovie();
+    fetchGenres();
   }, []);
-
-  const getTopRatedMovies = () => {
-    GlobalApi.getTopRated.then(res => {
-      setMovies(res.data.results);
-      console.log(res.data.results);
-    });
-  }
-
-  const getGenresMovie = () => {
-    GlobalApi.getGenres.then(res => {
-      setGenres(res.data.genres);
-    });
-  }
 
   const initGenre = (genresIds) => {
     return genres.filter((genre) => genresIds.includes(genre.id));;
