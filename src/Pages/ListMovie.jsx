@@ -3,6 +3,7 @@ import GlobalApi from "../Services/GlobalApi";
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import useMovieStore from "../Services/store";
+import Loading from "../Components/Loading";
 
 const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500";
 
@@ -11,48 +12,53 @@ function ListMovie() {
   const [sortBy, setSortBy] = useState("popularity-ascending");
   const [genres, setGenres] = useState([]);
   const [movies, setMovies] = useState([]);
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(true);
   const { onChangePosition } = useMovieStore();
 
   const { id } = useParams();
 
   useEffect(() => {
     const fetchMovie = async () => {
-      const data = await GlobalApi.getDiscover();
+      const data = await GlobalApi.getDiscover(page);
       setMovies(data.results);
+      setLoading(false);
     };
 
     const fetchGenres = async () => {
       const data = await GlobalApi.getGenres();
       setGenres(data.genres);
+      setLoading(false);
     };
 
     fetchMovie();
     fetchGenres();
-  }, []);
+  }, [page]);
 
   useEffect(() => {
     handleGenreChange(id);
   }, [id]);
 
+  const handleLoadMore = () => {
+    setPage((prevPage) => prevPage + 1);
+  }
+
   const initGenre = (genresIds) => {
     return genres.filter((genre) => genresIds.includes(genre.id));;
   }
 
-   useEffect(() => {
-      const handleBackButton = (event) => {
-        event.preventDefault();
-        onChangePosition(false);
-      };
-      window.history.pushState(null, "", window.location.href);
-      window.addEventListener("popstate", handleBackButton);
+  useEffect(() => {
+    const handleBackButton = (event) => {
+      event.preventDefault();
+      onChangePosition(false);
+    };
+    window.history.pushState(null, "", window.location.href);
+    window.addEventListener("popstate", handleBackButton);
 
-      console.log('KEMBALI');
-      
-  
-      return () => {
-        window.removeEventListener("popstate", handleBackButton);
-      };
-    }, [onChangePosition]);
+    return () => {
+      window.removeEventListener("popstate", handleBackButton);
+    };
+  }, [onChangePosition]);
 
   const handleGenreChange = (genreId) => {
     setSelectedGenres((prevGenres) =>
@@ -87,6 +93,10 @@ function ListMovie() {
         return a.popularity - b.popularity;
     }
   });
+
+  if (loading) {
+    return <Loading />
+  }
 
   return (
     <div className="bg-secondary text-white min-h-screen md:px-10 lg:px-20 xl:px-80 px-4 pt-20 pb-5 relative">
@@ -170,7 +180,7 @@ function ListMovie() {
 
           <button
             className="absolute left-1/2 transform -translate-x-1/2 bottom-[40px] bg-red-600 text-white font-semibold py-2 px-6 rounded-full shadow-lg hover:bg-red-700 transition duration-300"
-            onClick={() => { }}
+            onClick={handleLoadMore}
           >
             Load More
           </button>

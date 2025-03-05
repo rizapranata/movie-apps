@@ -19,12 +19,13 @@ const getGenres = async () => {
   }
 }
 
-const getDiscover = async () => {
+const getDiscover = async (page) => {
   try {
     const response = await axios.get(`${BASE_URL}/discover/movie`, {
       params: {
         api_key: API_KEY,
-        language: "en-US"
+        language: "en-US",
+        page: page
       }
     });
 
