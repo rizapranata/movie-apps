@@ -13,6 +13,9 @@ export default {
         success: "#27ae60",
         text: "#333",
       },
+      fontFamily: {
+        poppins: ['Poppins', 'sans-serif'],
+      },
     },
   },
   plugins: [

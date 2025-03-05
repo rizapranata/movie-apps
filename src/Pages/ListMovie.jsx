@@ -71,7 +71,7 @@ function ListMovie() {
 
   return (
     <div className="bg-secondary text-white min-h-screen md:px-10 lg:px-20 xl:px-60 px-4 pt-20 pb-5 relative">
-      <div className="py-6">
+      <div className="py-10">
         <div className="w-20 h-1 bg-red-500 mt-1"></div>
         <h2 className="text-3xl md:text-4xl text-white">Movies {id}</h2>
       </div>
@@ -81,7 +81,7 @@ function ListMovie() {
         {/* Sidebar - Filter */}
         <div className="w-full md:w-1/5 h-1/2 bg-gradient-to-b from-gray-900 to-gray-800 p-4 rounded-lg shadow-lg">
           <h2 className="text-lg font-semibold mb-4 ml-2">Sorted Result By</h2>
-          <hr className="border-t border-gray-200 my-2" />
+          <hr className="border-t border-gray-600 my-2" />
           <select
             className="w-full p-2 my-3 bg-gray-700 text-white rounded"
             value={sortBy}
@@ -94,9 +94,9 @@ function ListMovie() {
             <option value="rating-ascending">Rating Ascending</option>
             <option value="rating-descending">Rating Descending</option>
           </select>
-          <hr className="border-t border-gray-200 my-2" />
+          <hr className="border-t border-gray-600 my-2" />
           <h2 className="text-lg font-semibold mb-4 ml-2">Genres</h2>
-          <hr className="border-t border-gray-200 my-3" />
+          <hr className="border-t border-gray-600 my-3" />
           {genres.map((genre) => (
             <label key={JSON.stringify(genre.id)} className="flex items-center flex-row-reverse justify-between mb-2 ml-2">
               <input
@@ -116,34 +116,36 @@ function ListMovie() {
             const year = movie.release_date.split('-')[0];
 
             return (
-              <Link key={movie.id} to={`/detail/movie/${movie.id}`} className="relative group cursor-pointer">
-                <img
-                  src={IMAGE_BASE_URL + movie.backdrop_path}
-                  className="shadow-md lg:w-full h-[350px] object-cover"
-                />
+              <div>
+                <Link key={movie.id} to={`/detail/movie/${movie.id}`} className="relative group cursor-pointer">
+                  <img
+                    src={IMAGE_BASE_URL + movie.backdrop_path}
+                    className="shadow-md lg:w-full h-[350px] object-cover"
+                  />
 
-                <span className="absolute top-0 right-0 bg-green-600 text-xs font-bold text-white px-2 py-1">
-                  {movie.vote_average}
-                </span>
-
-                <div className="absolute inset-0 bg-black bg-opacity-75 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <span className="text-yellow-400 text-lg font-bold flex items-center">
-                    ★ {movie.vote_average}
+                  <span className="absolute top-0 right-0 bg-green-600 text-xs font-bold text-white px-2 py-1">
+                    {movie.vote_average}
                   </span>
-                  <p className="text-gray-300 text-sm mt-1">{initGenre(movie.genre_ids).map(data => data.name).join(", ")}</p>
-                  <button
-                    className="mt-3 bg-red-500 text-white px-4 py-1 rounded-full text-sm font-semibold"
-                    onClick={(e) => e.preventDefault()}
-                  >
-                    VIEW
-                  </button>
-                </div>
 
+                  <div className="absolute inset-0 bg-black bg-opacity-75 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <span className="text-yellow-400 text-lg font-bold flex items-center">
+                      ★ {movie.vote_average}
+                    </span>
+                    <p className="text-gray-300 text-sm mt-1">{initGenre(movie.genre_ids).map(data => data.name).join(", ")}</p>
+                    <button
+                      className="mt-3 bg-red-500 text-white px-4 py-1 rounded-full text-sm font-semibold"
+                      onClick={(e) => e.preventDefault()}
+                    >
+                      VIEW
+                    </button>
+                  </div>
+
+                </Link>
                 <div className="mt-2">
                   <h3 className="text-base font-semibold">{movie.title}</h3>
                   <p className="text-gray-400 text-sm">{year}</p>
                 </div>
-              </Link>
+              </div>
             );
           })}
 
