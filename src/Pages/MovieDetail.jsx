@@ -4,6 +4,7 @@ import GlobalApi from '../Services/GlobalApi';
 import Loading from '../Components/Loading';
 import star from '../assets/Images/star-icon.png';
 import useMovieStore from '../Services/store';
+import { useLocation } from "react-router-dom";
 
 const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/original";
 
@@ -26,10 +27,15 @@ const reviews = [
 
 const MovieDetail = () => {
   const { id } = useParams();
+  const location = useLocation();
   const [movie, setMovie] = useState(null);
   const [loading, setLoading] = useState(true);
   const [movies, setMovies] = useState([]);
   const { onChangePosition } = useMovieStore();
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "auto" });
+  }, [location.pathname]);
 
   useEffect(() => {
     const fetchMovie = async () => {
@@ -134,7 +140,7 @@ const MovieDetail = () => {
               const year = movie?.release_date.split('-')[0];
               return (
                 <div>
-                  <Link key={movie.id} to={`/detail/movie/${movie.id}`} className="relative group cursor-pointer">
+                  <Link key={movie.id} className="relative group cursor-pointer">
                     <img
                       src={IMAGE_BASE_URL + movie?.backdrop_path}
                       className="shadow-md lg:w-full h-[350px] object-cover"
@@ -149,12 +155,12 @@ const MovieDetail = () => {
                         ★ {movie?.vote_average}
                       </span>
                       {/* <p className="text-gray-300 text-sm mt-1">{initGenre(movie.genre_ids).map(data => data.name).join(", ")}</p> */}
-                      <button
+                      {/* <button
                         className="mt-3 bg-red-500 text-white px-4 py-1 rounded-full text-sm font-semibold"
                         onClick={(e) => e.preventDefault()} // Hindari reload saat klik tombol
                       >
                         VIEW
-                      </button>
+                      </button> */}
                     </div>
                   </Link>
                   <div key={movie?.title} className="mt-2">

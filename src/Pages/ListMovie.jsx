@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import GlobalApi from "../Services/GlobalApi";
-import { useParams } from "react-router-dom";
+// import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import useMovieStore from "../Services/store";
 import Loading from "../Components/Loading";
@@ -16,7 +16,7 @@ function ListMovie() {
   const [loading, setLoading] = useState(true);
   const { onChangePosition } = useMovieStore();
 
-  const { id } = useParams();
+  // const { id } = useParams();
 
   useEffect(() => {
     const fetchMovie = async () => {
@@ -35,11 +35,12 @@ function ListMovie() {
     fetchGenres();
   }, [page]);
 
-  useEffect(() => {
-    handleGenreChange(id);
-  }, [id]);
+  // useEffect(() => {
+  //   handleGenreChange(id);
+  // }, [id]);
 
   const handleLoadMore = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
     setPage((prevPage) => prevPage + 1);
   }
 
@@ -102,7 +103,7 @@ function ListMovie() {
     <div className="bg-secondary text-white min-h-screen md:px-10 lg:px-20 xl:px-80 px-4 pt-20 pb-5 relative">
       <div className="py-10">
         <div className="w-20 h-1 bg-red-500 mt-1"></div>
-        <h2 className="text-3xl md:text-4xl text-white">Movies {id}</h2>
+        <h2 className="text-3xl md:text-4xl text-white">Movies</h2>
       </div>
 
       {/* Container */}
