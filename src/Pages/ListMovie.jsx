@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import GlobalApi from "../Services/GlobalApi";
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
+import useMovieStore from "../Services/store";
 
 const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500";
 
@@ -10,6 +11,8 @@ function ListMovie() {
   const [sortBy, setSortBy] = useState("popularity-ascending");
   const [genres, setGenres] = useState([]);
   const [movies, setMovies] = useState([]);
+  const { onChangePosition } = useMovieStore();
+
   const { id } = useParams();
 
   useEffect(() => {
@@ -34,6 +37,22 @@ function ListMovie() {
   const initGenre = (genresIds) => {
     return genres.filter((genre) => genresIds.includes(genre.id));;
   }
+
+   useEffect(() => {
+      const handleBackButton = (event) => {
+        event.preventDefault();
+        onChangePosition(false);
+      };
+      window.history.pushState(null, "", window.location.href);
+      window.addEventListener("popstate", handleBackButton);
+
+      console.log('KEMBALI');
+      
+  
+      return () => {
+        window.removeEventListener("popstate", handleBackButton);
+      };
+    }, [onChangePosition]);
 
   const handleGenreChange = (genreId) => {
     setSelectedGenres((prevGenres) =>
@@ -70,7 +89,7 @@ function ListMovie() {
   });
 
   return (
-    <div className="bg-secondary text-white min-h-screen md:px-10 lg:px-20 xl:px-60 px-4 pt-20 pb-5 relative">
+    <div className="bg-secondary text-white min-h-screen md:px-10 lg:px-20 xl:px-80 px-4 pt-20 pb-5 relative">
       <div className="py-10">
         <div className="w-20 h-1 bg-red-500 mt-1"></div>
         <h2 className="text-3xl md:text-4xl text-white">Movies {id}</h2>
@@ -101,7 +120,7 @@ function ListMovie() {
             <label key={JSON.stringify(genre.id)} className="flex items-center flex-row-reverse justify-between mb-2 ml-2">
               <input
                 type="checkbox"
-                className="form-checkbox h-5 w-5 text-blue-500"
+                className="form-checkbox h-4 w-4 text-red-300 rounded border-gray-300 bg-gray-400"
                 checked={selectedGenres.includes(genre.id)}
                 onChange={() => handleGenreChange(genre.id)}
               />
@@ -117,7 +136,7 @@ function ListMovie() {
 
             return (
               <div>
-                <Link key={movie.id} to={`/detail/movie/${movie.id}`} className="relative group cursor-pointer">
+                <Link key={movie.id} to={`/detail/movie/${movie.id}`} onClick={() => onChangePosition(true)} className="relative group cursor-pointer">
                   <img
                     src={IMAGE_BASE_URL + movie.backdrop_path}
                     className="shadow-md lg:w-full h-[350px] object-cover"

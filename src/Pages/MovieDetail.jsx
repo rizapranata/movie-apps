@@ -3,6 +3,8 @@ import { Link, useParams } from 'react-router-dom'
 import GlobalApi from '../Services/GlobalApi';
 import Loading from '../Components/Loading';
 import star from '../assets/Images/star-icon.png';
+import useMovieStore from '../Services/store';
+
 const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/original";
 
 const reviews = [
@@ -27,6 +29,7 @@ const MovieDetail = () => {
   const [movie, setMovie] = useState(null);
   const [loading, setLoading] = useState(true);
   const [movies, setMovies] = useState([]);
+  const { onChangePosition } = useMovieStore();
 
   useEffect(() => {
     const fetchMovie = async () => {
@@ -43,14 +46,29 @@ const MovieDetail = () => {
 
     fetchMovie();
     fetchMovies();
-  }, [id]);
+  }, [id, onChangePosition]);
+
+  useEffect(() => {
+    const handleBackButton = (event) => {
+      event.preventDefault();
+      alert("Anda menekan tombol Back!");
+      console.log("KEMBALI");
+      
+      onChangePosition(false);
+    };
+    window.addEventListener("popstate", handleBackButton);
+
+    return () => {
+      window.removeEventListener("popstate", handleBackButton);
+    };
+  }, [onChangePosition]);
 
   if (loading) {
     return <Loading />
   }
 
   return (
-    <div className="bg-secondary text-white min-h-screen pt-10 md:px-10 lg:px-20 xl:px-60">
+    <div className="bg-secondary text-white min-h-screen md:px-10 lg:px-20 xl:px-60">
       <div
         className="relative w-full h-[400px] md:h-[500px] lg:h-[600px] bg-cover bg-center"
         style={{ backgroundImage: `url(${IMAGE_BASE_URL + movie.backdrop_path})` }}
@@ -90,7 +108,7 @@ const MovieDetail = () => {
           <h3 className="text-xl font-bold text-red-500">REVIEWS</h3>
           <div className="mt-4 grid md:grid-cols-2 gap-6">
             {reviews.map(review => (
-              <div key={JSON.stringify(review.id)} className="bg-gray-50 p-4 rounded-lg shadow-md">
+              <div key={review.id} className="bg-gray-50 p-4 rounded-lg shadow-md">
                 <div className="flex justify-between">
                   <div className="flex">
                     <div className="w-10 h-10 bg-gray-200 rounded-full mr-3"></div>

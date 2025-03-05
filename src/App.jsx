@@ -12,9 +12,9 @@ function App() {
     <Router>
       <Header />
       <Routes>
-        <Route path="/movies" element={<h1 className="text-center mt-10">Movies Page</h1>} />
-        <Route path="/tvshows" element={<h1 className="text-center mt-10">TV Shows Page</h1>} />
-        <Route path="/login" element={<h1 className="text-center mt-10">Login</h1>} />
+        <Route path="/movies" element={<Home />} />
+        <Route path="/tvshows" element={<Home />} />
+        <Route path="/login" element={<Home />} />
         <Route path="/category/:id" element={<ListMovie />} />
         <Route path="/detail/movie/:id" element={<MovieDetail />} />
         <Route path="/" element={<Home />} />

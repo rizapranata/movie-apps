@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import GlobalApi from '../Services/GlobalApi';
 import Loading from './Loading';
 import { Link } from "react-router-dom";
+import useMovieStore from '../Services/store';
 
 const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/original";
 
@@ -9,6 +10,7 @@ function Discover() {
   const [movies, setMovies] = useState([]);
   const [genres, setGenres] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { onChangePosition } = useMovieStore();
 
   useEffect(() => {
     const fetchMovie = async () => {
@@ -25,7 +27,7 @@ function Discover() {
 
     fetchMovie();
     fetchGenres();
-  }, []);
+  }, [onChangePosition]);
 
   const initGenre = (genresIds) => {
     return genres.filter((genre) => genresIds.includes(genre.id));;
@@ -36,7 +38,7 @@ function Discover() {
   }
 
   return (
-    <div className="bg-primary text-white py-10 sm:px-5 md:px-40 lg:px-50 xl:px-60">
+    <div className="bg-primary text-white py-10 sm:px-5 md:px-20 lg:px-40 xl:px-80">
       <div className="flex items-center justify-between mb-5">
         <div>
           <div className="w-20 h-1 bg-red-500 mt-1"></div>
@@ -53,12 +55,12 @@ function Discover() {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-x-4 gap-y-8">
+      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-6 gap-y-8">
         {movies.map((movie) => {
           const year = movie.release_date.split('-')[0];
           return (
             <div>
-              <Link key={movie.id} to={`/detail/movie/${movie.id}`} className="relative group cursor-pointer">
+              <Link key={movie.id} to={`/detail/movie/${movie.id}`} onClick={() => {onChangePosition(true)}} className="relative group cursor-pointer">
                 <img
                   src={IMAGE_BASE_URL + movie.backdrop_path}
                   className="shadow-md lg:w-full h-[350px] object-cover"
