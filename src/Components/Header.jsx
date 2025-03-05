@@ -21,7 +21,7 @@ function Header() {
   }, []);
 
   return (//bg-opacity-50 -> untuk transparan
-    <nav className="bg-primary text-white p-4 fixed top-0 left-0 w-full z-10">
+    <nav className="bg-primary text-white p-4 fixed top-0 left-0 w-full z-10 sm:px-5 md:px-[20px] sm:px-[20px] md:px-40 lg:px-50 xl:px-60">
       <div className="container mx-auto flex justify-between items-center">
         {/* Logo & Search */}
         <div className="flex items-center space-x-4 md:space-x-7">
