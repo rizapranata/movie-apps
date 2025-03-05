@@ -62,7 +62,7 @@ function Slider() {
 
       {/* Dots Navigation */}
       <div className="absolute bottom-5 left-1/2 transform -translate-x-1/2 flex space-x-2">
-        {movies.slice(0, 5).map((_, index) => (
+        {movies.slice(0, 7).map((_, index) => (
           <button
             key={index}
             className={`h-2 w-2 rounded-full transition-all ${activeIndex === index ? "bg-red-500 w-8" : "bg-gray-500"

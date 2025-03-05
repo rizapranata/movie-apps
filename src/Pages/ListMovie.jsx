@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 import GlobalApi from "../Services/GlobalApi";
 import { useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
+
 const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500";
 
 function ListMovie() {
   const [selectedGenres, setSelectedGenres] = useState([]);
+  const [sortBy, setSortBy] = useState("popularity-ascending");
   const [genres, setGenres] = useState([]);
   const [movies, setMovies] = useState([]);
   const { id } = useParams();
@@ -28,7 +31,10 @@ function ListMovie() {
     handleGenreChange(id);
   }, [id]);
 
-  // Handle genre selection
+  const initGenre = (genresIds) => {
+    return genres.filter((genre) => genresIds.includes(genre.id));;
+  }
+
   const handleGenreChange = (genreId) => {
     setSelectedGenres((prevGenres) =>
       prevGenres.includes(genreId)
@@ -37,7 +43,6 @@ function ListMovie() {
     );
   };
 
-  // Filter movies based on selected genres
   const filteredMovies =
     selectedGenres.length > 0
       ? movies.filter((movie) =>
@@ -45,8 +50,27 @@ function ListMovie() {
       )
       : movies;
 
+  const sortedMovies = [...filteredMovies].sort((a, b) => {
+    switch (sortBy) {
+      case "popularity-ascending":
+        return a.popularity - b.popularity;
+      case "popularity-descending":
+        return b.popularity - a.popularity;
+      case "releasedate-ascending":
+        return a.release_date - b.release_date;
+      case "releasedate-descending":
+        return b.release_date - a.release_date
+      case "rating-ascending":
+        return a.vote_average - b.vote_average;
+      case "rating-descending":
+        return b.vote_average - a.vote_average
+      default:
+        return a.popularity - b.popularity;
+    }
+  });
+
   return (
-    <div className="bg-secondary text-white min-h-screen px-4 md:px-10 lg:px-20 xl:px-60 pt-20 pb-5">
+    <div className="bg-secondary text-white min-h-screen md:px-10 lg:px-20 xl:px-60 px-4 pt-20 pb-5 relative">
       <div className="py-6">
         <div className="w-20 h-1 bg-red-500 mt-1"></div>
         <h2 className="text-3xl md:text-4xl text-white">Movies {id}</h2>
@@ -55,10 +79,21 @@ function ListMovie() {
       {/* Container */}
       <div className="flex flex-col md:flex-row gap-6">
         {/* Sidebar - Filter */}
-        <div className="w-full md:w-1/5 h-1/2 bg-gray-900 p-4 rounded-lg shadow-lg">
+        <div className="w-full md:w-1/5 h-1/2 bg-gradient-to-b from-gray-900 to-gray-800 p-4 rounded-lg shadow-lg">
           <h2 className="text-lg font-semibold mb-4 ml-2">Sorted Result By</h2>
           <hr className="border-t border-gray-200 my-2" />
-          <h2 className="text-lg font-semibold mb-4 ml-2">Popularity</h2>
+          <select
+            className="w-full p-2 my-3 bg-gray-700 text-white rounded"
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value)}
+          >
+            <option value="popularity-ascending">Popularity Ascending</option>
+            <option value="popularity-descending">Popularity Descending</option>
+            <option value="releasedate-ascending">Release Date Ascending</option>
+            <option value="releasedate-descending">Release Date Descending</option>
+            <option value="rating-ascending">Rating Ascending</option>
+            <option value="rating-descending">Rating Descending</option>
+          </select>
           <hr className="border-t border-gray-200 my-2" />
           <h2 className="text-lg font-semibold mb-4 ml-2">Genres</h2>
           <hr className="border-t border-gray-200 my-3" />
@@ -76,25 +111,51 @@ function ListMovie() {
         </div>
 
         {/* Movie List */}
-        <div className="w-full md:w-4/5 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {filteredMovies.map((movie) => (
-            <div key={JSON.stringify(movie.id)} className="relative">
-              <img
-                src={`${IMAGE_BASE_URL}${movie.poster_path}`}
-                alt={movie.title}
-                className="w-full h-[300px] sm:h-[350px] md:h-[383px] object-cover shadow-md"
-              />
-              <span className="absolute top-0 right-0 bg-green-600 text-white text-xs font-bold px-2 py-1">
-                {movie.vote_average.toFixed(1)}
-              </span>
-              <h3 className="text-sm font-semibold mt-2">{movie.title}</h3>
-              <p className="text-xs text-gray-400">{movie.release_date}</p>
-            </div>
-          ))}
+        <div className="w-full md:w-4/5 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-6 pb-40 relative">
+          {sortedMovies.map((movie) => {
+            const year = movie.release_date.split('-')[0];
+
+            return (
+              <Link key={movie.id} to={`/detail/movie/${movie.id}`} className="relative group cursor-pointer">
+                <img
+                  src={IMAGE_BASE_URL + movie.backdrop_path}
+                  className="shadow-md lg:w-full h-[350px] object-cover"
+                />
+
+                <span className="absolute top-0 right-0 bg-green-600 text-xs font-bold text-white px-2 py-1">
+                  {movie.vote_average}
+                </span>
+
+                <div className="absolute inset-0 bg-black bg-opacity-75 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <span className="text-yellow-400 text-lg font-bold flex items-center">
+                    ★ {movie.vote_average}
+                  </span>
+                  <p className="text-gray-300 text-sm mt-1">{initGenre(movie.genre_ids).map(data => data.name).join(", ")}</p>
+                  <button
+                    className="mt-3 bg-red-500 text-white px-4 py-1 rounded-full text-sm font-semibold"
+                    onClick={(e) => e.preventDefault()}
+                  >
+                    VIEW
+                  </button>
+                </div>
+
+                <div className="mt-2">
+                  <h3 className="text-base font-semibold">{movie.title}</h3>
+                  <p className="text-gray-400 text-sm">{year}</p>
+                </div>
+              </Link>
+            );
+          })}
+
+          <button
+            className="absolute left-1/2 transform -translate-x-1/2 bottom-[40px] bg-red-600 text-white font-semibold py-2 px-6 rounded-full shadow-lg hover:bg-red-700 transition duration-300"
+            onClick={() => { }}
+          >
+            Load More
+          </button>
         </div>
       </div>
     </div>
-
   );
 }
 
