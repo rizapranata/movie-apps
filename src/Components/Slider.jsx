@@ -1,21 +1,25 @@
 import React, { useEffect, useState } from 'react'
 import GlobalApi from '../Services/GlobalApi';
+import Loading from './Loading';
 const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/original";
 
 function Slider() {
   const [movies, setMovies] = useState([]);
   const [genres, setGenres] = useState([]);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchMovie = async () => {
       const data = await GlobalApi.getTopRated();
       setMovies(data.results);
+      setLoading(false);
     };
 
     const fetchGenres = async () => {
       const data = await GlobalApi.getGenres();
       setGenres(data.genres);
+      setLoading(false);
     };
 
     fetchMovie();
@@ -30,6 +34,10 @@ function Slider() {
     const index = Math.round(event.target.scrollLeft / event.target.clientWidth);
     setActiveIndex(index);
   };
+
+  if (loading) {
+    return <Loading /> // Tampilkan loading jika masih fetching
+  }
 
   return (
     <div className="bg-secondary relative w-full mx-auto px-4 pt-[70px]">

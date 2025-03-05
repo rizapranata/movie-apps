@@ -5,7 +5,7 @@ import Discover from "./Components/Discover";
 import Footer from "./Components/Footer";
 import Home from "./Pages/Home";
 import ListMovie from "./Pages/ListMovie";
-import Detail from "./Pages/Detail";
+import MovieDetail from "./Pages/MovieDetail";
 
 function App() {
   return (
@@ -16,7 +16,7 @@ function App() {
         <Route path="/tvshows" element={<h1 className="text-center mt-10">TV Shows Page</h1>} />
         <Route path="/login" element={<h1 className="text-center mt-10">Login</h1>} />
         <Route path="/category/:id" element={<ListMovie />} />
-        <Route path="/detail/movie/:id" element={<Detail />} />
+        <Route path="/detail/movie/:id" element={<MovieDetail />} />
         <Route path="/" element={<Home />} />
       </Routes>
       <Footer/>

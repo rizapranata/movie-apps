@@ -1,21 +1,26 @@
 import React, { useEffect, useState } from 'react'
 import GlobalApi from '../Services/GlobalApi';
+import Loading from './Loading';
 import { Link } from "react-router-dom";
+
 const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/original";
 
 function Discover() {
   const [movies, setMovies] = useState([]);
   const [genres, setGenres] = useState([]);
+  const [loading, setLoading] = useState(true);
 
    useEffect(() => {
       const fetchMovie = async () => {
         const data = await GlobalApi.getDiscover();
         setMovies(data.results);
+        setLoading(false);
       };
 
       const fetchGenres = async () => {
         const data = await GlobalApi.getGenres();
         setGenres(data.genres);
+        setLoading(false);
       };
   
       fetchMovie();
@@ -24,6 +29,10 @@ function Discover() {
 
   const initGenre = (genresIds) => {
     return genres.filter((genre) => genresIds.includes(genre.id));;
+  }
+
+  if (loading) {
+    return <Loading />
   }
 
   return (
