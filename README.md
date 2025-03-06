@@ -3,8 +3,8 @@
 
 1️⃣ Clone Repository (Jika Belum di Clone)
 
-git clone <repository_url>
-cd <nama-folder-project>
+git clone <https://github.com/rizapranata/movie-apps>
+cd <movie-apps>
 
 2️⃣ Pastikan Node.js Sudah Terinstall
 
