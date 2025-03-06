@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import GlobalApi from "../Services/GlobalApi";
-// import { useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import useMovieStore from "../Services/store";
 import Loading from "../Components/Loading";
@@ -16,7 +16,7 @@ function ListMovie() {
   const [loading, setLoading] = useState(true);
   const { onChangePosition } = useMovieStore();
 
-  // const { id } = useParams();
+  const { id } = useParams();
 
   useEffect(() => {
     const fetchMovie = async () => {
@@ -35,9 +35,9 @@ function ListMovie() {
     fetchGenres();
   }, [page]);
 
-  // useEffect(() => {
-  //   handleGenreChange(id);
-  // }, [id]);
+  useEffect(() => {
+    setSelectedGenres(id);
+  }, [id]);
 
   const handleLoadMore = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
