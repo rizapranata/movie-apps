@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react'
-import logo from '../assets/Images/movielogo.png'
-import iconfinder from '../assets/Images/iconfinder.png'
-import searchIcon from '../assets/Images/search-icon.png'
+import React, { useEffect } from "react";
+import logo from "../assets/Images/movielogo.png";
+import iconfinder from "../assets/Images/iconfinder.png";
+import searchIcon from "../assets/Images/search-icon.png";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import GlobalApi from '../Services/GlobalApi';
-import useMovieStore from '../Services/store';
+import GlobalApi from "../Services/GlobalApi";
+import useMovieStore from "../Services/store";
 import { useNavigate } from "react-router-dom";
 import { Select } from "antd";
 
@@ -26,7 +26,7 @@ function Header() {
     const fetchMovies = async () => {
       const data = await GlobalApi.getDiscover();
       setMovies(data.results);
-    }
+    };
 
     fetchGenres();
     fetchMovies();
@@ -39,11 +39,21 @@ function Header() {
 
   console.log("movies:", movies);
   return (
-    <nav className={`${isPositionDetailPage ? "bg-opacity-50" : "bg-primary"} text-white p-4 fixed top-0 left-0 w-full z-10 sm:px-5 md:px-[20px] lg:px-40 xl:px-80`}>
+    <nav
+      className={`${
+        isPositionDetailPage ? "bg-opacity-50" : "bg-primary"
+      } text-white p-4 fixed top-0 left-0 w-full z-10 px-5 md:px-20 lg:px-20 xl:px-80`}
+    >
       <div className="container mx-auto flex justify-between items-center">
         {/* Logo & Search */}
         <div className="flex items-center space-x-4 md:space-x-7">
-          <Link to="/" className="text-xl font-bold" onClick={() => { onChangePosition(false) }}>
+          <Link
+            to="/"
+            className="text-xl font-bold"
+            onClick={() => {
+              onChangePosition(false);
+            }}
+          >
             <img src={logo} className="w-[80px] md:w-[115px] object-cover" />
           </Link>
           {/* Search Input */}
@@ -53,14 +63,25 @@ function Header() {
               placeholder="Search and Select.."
               optionFilterProp="children"
               onChange={handleChange}
-              style={{ height: '40px' }}
-              className={`${isPositionDetailPage ? "bg-transparent" : "bg-secondary"} py-1 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 w-40 sm:w-60 md:w-72 lg:w-80`}
+              style={{ height: "40px" }}
+              className={`${
+                isPositionDetailPage ? "bg-transparent" : "bg-secondary"
+              } py-1 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 w-40 sm:w-60 md:w-72 lg:w-80`}
             >
-              {movies && movies.map(movie => (
-                <Option key={movie.id} value={movie.id} style={{ backgroundColor: 'black', color: 'white', border: '0' }}>
-                  {movie.title}
-                </Option>
-              ))}
+              {movies &&
+                movies.map((movie) => (
+                  <Option
+                    key={movie.id}
+                    value={movie.id}
+                    style={{
+                      backgroundColor: "black",
+                      color: "white",
+                      border: "0",
+                    }}
+                  >
+                    {movie.title}
+                  </Option>
+                ))}
             </Select>
             <img
               src={searchIcon}
@@ -79,12 +100,13 @@ function Header() {
 
         {/* Navigation Links */}
         <ul
-          className={`absolute md:relative top-14 md:top-0 left-0 w-full md:w-auto bg-primary md:bg-transparent p-4 md:p-0 md:flex items-center space-y-4 md:space-y-0 md:space-x-8 transition-all duration-300 ${isOpen ? "block" : "hidden"
-            } md:block`}
+          className={`absolute md:relative top-14 md:top-0 left-0 w-full md:w-auto bg-primary md:bg-transparent p-4 md:p-0 md:flex items-center space-y-4 md:space-y-0 md:space-x-8 transition-all duration-300 ${
+            isOpen ? "block" : "hidden"
+          } md:block`}
         >
           {/* Dropdown Categories */}
           <li className="relative group">
-            <div className="flex items-center cursor-pointer">
+            <div className="flex items-center cursor-pointer text-base">
               <img
                 src={iconfinder}
                 className="w-5 h-5 object-cover mr-2 hidden md:block"
@@ -121,9 +143,7 @@ function Header() {
         </ul>
       </div>
     </nav>
-
-
-  )
+  );
 }
 
-export default Header
+export default Header;

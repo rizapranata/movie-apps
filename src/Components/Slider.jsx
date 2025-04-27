@@ -49,14 +49,14 @@ function Slider() {
         {movies.map((movie) => {
           const year = movie.release_date.split("-")[0];
           return (
-            <div key={movie.id} className="snap-center flex-shrink-0 w-full sm:w-3/4 md:w-2/3 lg:w-1/2 xl:w-1/3">
+            <div key={movie.id} className="snap-center flex-shrink-0 w-full md:w-2/3 lg:w-1/2 xl:w-1/3">
               <div className="flex flex-col md:flex-row justify-between items-center text-white p-6 lg:p-10 md:p-10 rounded-lg">
                 <img
                   src={IMAGE_BASE_URL + movie.backdrop_path}
-                  className="w-full sm:w-64 md:w-48 lg:w-60 xl:w-72 h-40 sm:h-56 md:h-64 lg:h-80 xl:h-96 object-cover"
+                  className="w-full md:w-48 lg:w-60 xl:w-72 h-40 md:h-64 lg:h-80 xl:h-96 object-cover"
                 />
 
-                <div className="bg-black my-4 min-w-60 p-4 w-full sm:w-3/4 md:w-2/3 lg:w-1/2 xl:w-1/3">
+                <div className="bg-black my-4 min-w-60 p-4 w-full md:w-2/3 lg:w-1/2 xl:w-1/3">
                   <span className="text-yellow-400 font-bold">★ {movie.vote_average}</span>
                   <p className="text-gray-400 text-sm">{year} • {initGenre(movie.genre_ids).map((data) => data.name).join(", ")}</p>
                   <h2 className="text-lg font-semibold">{movie.title}</h2>

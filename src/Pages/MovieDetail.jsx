@@ -81,7 +81,7 @@ const MovieDetail = () => {
           <img
             src={IMAGE_BASE_URL + movie?.poster_path}
             alt="Movie Poster"
-            className="w-48 md:w-60 lg:w-72 shadow-lg"
+            className="w-48 md:w-60 lg:w-72 shadow-lg pt-72 md:pt-10"
           />
           <div className="ml-6 md:ml-10">
             <h2 className="text-2xl md:text-4xl font-bold">{movie?.title} ({new Date(movie?.release_date).getFullYear()})</h2>
@@ -131,15 +131,15 @@ const MovieDetail = () => {
           </div>
         </div>
       </div>
-      <div className="p-10">
+      <div className="pt-10">
         <div className="text-lg pl-[55px]">RECOMENDATION MOVIES</div>
         <div className="flex mx-auto pt-10">
           <div className="flex-none w-14"></div>
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-x-4 gap-y-8">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-x-4 gap-y-8">
             {movies.slice(0, 5).map((movie) => {
               const year = movie?.release_date.split('-')[0];
               return (
-                <div>
+                <div key={movie.id}>
                   <Link key={movie.id} className="relative group cursor-pointer">
                     <img
                       src={IMAGE_BASE_URL + movie?.backdrop_path}

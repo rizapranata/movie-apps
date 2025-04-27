@@ -38,7 +38,7 @@ function Discover() {
   }
 
   return (
-    <div className="bg-primary text-white py-10 sm:px-5 md:px-20 lg:px-40 xl:px-80">
+    <div className="bg-primary text-white py-10 px-10 md:px-32 lg:px-32 xl:px-60">
       <div className="flex items-center justify-between mb-5">
         <div>
           <div className="w-20 h-1 bg-red-500 mt-1"></div>
@@ -59,7 +59,7 @@ function Discover() {
         {movies.map((movie) => {
           const year = movie.release_date.split('-')[0];
           return (
-            <div>
+            <div key={movie.id}>
               <Link key={movie.id} to={`/detail/movie/${movie.id}`} onClick={() => {onChangePosition(true)}} className="relative group cursor-pointer">
                 <img
                   src={IMAGE_BASE_URL + movie.backdrop_path}
